@@ -1,0 +1,474 @@
+openapi: 3.0.0
+info:
+  title: Ticket Monitoring Dashboard API
+  description: API for managing stages, customers, projects, project progress, and substage batch operations.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080/api/v1'
+    description: Local development server
+
+paths:
+  # Project API Endpoints
+  /projects:
+    post:
+      summary: Create a new project
+      operationId: createProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '201':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad request (invalid data)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      summary: Get all projects
+      operationId: getAllProjects
+      responses:
+        '200':
+          description: List of all projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /projects/{projectId}:
+    get:
+      summary: Get a project by ID
+      operationId: getProjectByID
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Project retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # Customer API Endpoints
+  /customers:
+    post:
+      summary: Create a new customer
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Bad request (invalid data)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # Stage API Endpoints
+  /stages:
+    post:
+      summary: Create a new stage
+      operationId: createStage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stage'
+      responses:
+        '201':
+          description: Stage created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stage'
+        '400':
+          description: Bad request (invalid data)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /stages/{stageId}:
+    get:
+      summary: Get a stage by ID
+      operationId: getStageByID
+      parameters:
+        - name: stageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Stage retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stage'
+        '404':
+          description: Stage not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update an existing stage
+      operationId: updateStage
+      parameters:
+        - name: stageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stage'
+      responses:
+        '200':
+          description: Stage updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stage'
+        '404':
+          description: Stage not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # SubStage API Endpoints (Batch Create)
+  /subStages/batch:
+    post:
+      summary: Batch create substages
+      operationId: batchCreateSubStages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubStage'
+      responses:
+        '201':
+          description: Substages created successfully in batch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubStage'
+        '400':
+          description: Bad request (invalid data)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ProjectProgress API Endpoints
+  /projectProgress:
+    post:
+      summary: Create a new project progress record
+      operationId: createProjectProgress
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectProgress'
+      responses:
+        '201':
+          description: Project progress created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectProgress'
+        '400':
+          description: Bad request (invalid data)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /projectProgress/{progressId}:
+    get:
+      summary: Get project progress by ID
+      operationId: getProjectProgressByID
+      parameters:
+        - name: progressId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Project progress retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectProgress'
+        '404':
+          description: Project progress not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update an existing project progress record
+      operationId: updateProjectProgress
+      parameters:
+        - name: progressId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Project progress updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectProgress'
+        '404':
+          description: Project progress not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        customer:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        contactPerson:
+          type: string
+        contactEmail:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Stage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        projectId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    SubStage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        stageId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        duration:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        startTime:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ProjectProgress:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        projectId:
+          type: string
+          format: uuid
+        subStageId:
+          type: string
+          format: uuid
+        customerName:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        message:
+          type: string
+        contactEmail:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      required:
+        - error
+        - ErrorCode
+        - Message
+      properties:
+        error:
+          type: string
+        ErrorCode:
+          type: string
+        Message:
+          type: string
