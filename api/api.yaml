@@ -297,13 +297,24 @@ paths:
             format: uuid
       responses:
         '200':
-          description: Project progress retrieved successfully
+          description: Project retrieved successfully with stages, substages, and customers
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProjectProgress'
+                type: object
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+                  stages:
+                    type: array
+                  items:
+                    $ref: '#/components/schemas/StageWithSubStages'
+                  customers:
+                    type: array
+                    items:
+                    $ref: '#/components/schemas/CustomerWithProjectProgress'
         '404':
-          description: Project progress not found
+          description: Project not found
           content:
             application/json:
               schema:
@@ -354,8 +365,6 @@ components:
           type: string
           format: uuid
         name:
-          type: string
-        customer:
           type: string
         createdAt:
           type: string
@@ -458,6 +467,56 @@ components:
         updatedAt:
           type: string
           format: date-time
+    StageWithSubStages:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        projectId:
+          type: string
+          format: uuid
+        subStages:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubStage'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CustomerWithProjectProgress:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+          projectId:
+            type: string
+            format: uuid
+          name:
+            type: string
+          contactPerson:
+            type: string
+          contactEmail:
+            type: string
+          projectProgress:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProjectProgress'
+          createdAt:
+            type: string
+            format: date-time
+          updatedAt:
+            type: string
+            format: date-time
+
 
     Error:
       type: object

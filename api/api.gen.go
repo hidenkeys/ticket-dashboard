@@ -30,6 +30,18 @@ type Customer struct {
 	UpdatedAt     *time.Time          `json:"updatedAt,omitempty"`
 }
 
+// CustomerWithProjectProgress defines model for CustomerWithProjectProgress.
+type CustomerWithProjectProgress struct {
+	ContactEmail    *string             `json:"contactEmail,omitempty"`
+	ContactPerson   *string             `json:"contactPerson,omitempty"`
+	CreatedAt       *time.Time          `json:"createdAt,omitempty"`
+	Id              *openapi_types.UUID `json:"id,omitempty"`
+	Name            *string             `json:"name,omitempty"`
+	ProjectId       *openapi_types.UUID `json:"projectId,omitempty"`
+	ProjectProgress *[]ProjectProgress  `json:"projectProgress,omitempty"`
+	UpdatedAt       *time.Time          `json:"updatedAt,omitempty"`
+}
+
 // Error defines model for Error.
 type Error struct {
 	ErrorCode string `json:"ErrorCode"`
@@ -40,7 +52,6 @@ type Error struct {
 // Project defines model for Project.
 type Project struct {
 	CreatedAt *time.Time          `json:"createdAt,omitempty"`
-	Customer  *string             `json:"customer,omitempty"`
 	Id        *openapi_types.UUID `json:"id,omitempty"`
 	Name      *string             `json:"name,omitempty"`
 	UpdatedAt *time.Time          `json:"updatedAt,omitempty"`
@@ -67,6 +78,17 @@ type Stage struct {
 	Id          *openapi_types.UUID `json:"id,omitempty"`
 	Name        *string             `json:"name,omitempty"`
 	ProjectId   *openapi_types.UUID `json:"projectId,omitempty"`
+	UpdatedAt   *time.Time          `json:"updatedAt,omitempty"`
+}
+
+// StageWithSubStages defines model for StageWithSubStages.
+type StageWithSubStages struct {
+	CreatedAt   *time.Time          `json:"createdAt,omitempty"`
+	Description *string             `json:"description,omitempty"`
+	Id          *openapi_types.UUID `json:"id,omitempty"`
+	Name        *string             `json:"name,omitempty"`
+	ProjectId   *openapi_types.UUID `json:"projectId,omitempty"`
+	SubStages   *[]SubStage         `json:"subStages,omitempty"`
 	UpdatedAt   *time.Time          `json:"updatedAt,omitempty"`
 }
 
@@ -310,24 +332,26 @@ func RegisterHandlersWithOptions(router fiber.Router, si ServerInterface, option
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"AAD//608jA1HJgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

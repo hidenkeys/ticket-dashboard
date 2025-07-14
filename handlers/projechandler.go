@@ -81,8 +81,7 @@ func (s Server) CreateProject(c *fiber.Ctx) error {
 		})
 	}
 	project := models.Project{
-		Name:     *req.Name,
-		Customer: *req.Customer,
+		Name: *req.Name,
 	}
 
 	err := s.projectServices.CreateProject(context.Background(), &project)

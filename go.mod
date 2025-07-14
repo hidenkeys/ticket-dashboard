@@ -1,6 +1,6 @@
 module ticket-monitoring-dashboard
 
-go 1.24.3
+go 1.23.0
 
 require (
 	github.com/getkin/kin-openapi v0.132.0
