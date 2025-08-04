@@ -26,6 +26,12 @@ go.work.sum
 
 # env file
 .env
+test.go
+test.py
+test2.py
+test3.py
+session.session
+xxxxxxxxx123jj333.session
 
 # Editor/IDE
 # .idea/
