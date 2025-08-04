@@ -12,6 +12,7 @@ type Server struct {
 	subStageService        *services.SubStageService
 	projectProgressService *services.ProjectProgressService
 	customerService        *services.CustomerService
+	otpService             *services.OTPService
 }
 
 func NewServer(db *gorm.DB,
@@ -20,6 +21,7 @@ func NewServer(db *gorm.DB,
 	subStageService *services.SubStageService,
 	projectProgressService *services.ProjectProgressService,
 	customerService *services.CustomerService,
+	otpService *services.OTPService,
 ) *Server {
 	return &Server{
 		db:                     db,
@@ -28,5 +30,6 @@ func NewServer(db *gorm.DB,
 		subStageService:        subStageService,
 		projectProgressService: projectProgressService,
 		customerService:        customerService,
+		otpService:             otpService,
 	}
 }

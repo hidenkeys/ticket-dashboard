@@ -36,6 +36,7 @@ func MigrateDatabase() {
 		&models.Customer{},
 		&models.ProjectProgress{},
 		&models.SubStage{},
+		&models.OTP{},
 		// Add any other models that you want to auto-migrate
 	)
 	if err != nil {

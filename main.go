@@ -37,7 +37,10 @@ func main() {
 	subStageService := services.NewSubStageService(subStageRepo)
 	customerService := services.NewCustomerService(customerRepo)
 
-	server := handlers.NewServer(db, stageService, projectService, subStageService, projectProgressService, customerService)
+	otpRepo := repository.NewOTPRepository(db)
+	otpService := services.NewOTPService(otpRepo)
+
+	server := handlers.NewServer(db, stageService, projectService, subStageService, projectProgressService, customerService, otpService)
 	app := fiber.New()
 	app.Use(logger.New())
 	app.Use(cors.New(cors.Config{

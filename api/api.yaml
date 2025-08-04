@@ -4,11 +4,59 @@ info:
   description: API for managing stages, customers, projects, project progress, and substage batch operations.
   version: 1.0.0
 servers:
-  - url: 'http://localhost:8080/api/v1'
+  - url: 'https://ticket-tracker-m5ylb.ondigitalocean.app'
     description: Local development server
 
 paths:
   # Project API Endpoints
+  /auth/request-otp:
+    post:
+      summary: Request OTP for verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identifier:
+                  type: string
+              required: [ identifier ]
+      responses:
+        "200":
+          description: OTP sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /auth/verify-otp:
+    post:
+      summary: Verify OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identifier:
+                  type: string
+                otp:
+                  type: string
+              required: [ identifier, otp ]
+      responses:
+        "200":
+          description: Email verified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   /projects:
     post:
       summary: Create a new project
@@ -307,12 +355,12 @@ paths:
                     $ref: '#/components/schemas/Project'
                   stages:
                     type: array
-                  items:
-                    $ref: '#/components/schemas/StageWithSubStages'
+                    items:
+                      $ref: '#/components/schemas/StageWithSubStages'
                   customers:
                     type: array
                     items:
-                    $ref: '#/components/schemas/CustomerWithProjectProgress'
+                      $ref: '#/components/schemas/CustomerWithProjectProgress'
         '404':
           description: Project not found
           content:
